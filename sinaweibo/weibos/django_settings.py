@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'weibos.apps.sina',
-    'django_extensions'
+    'django_extensions',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -111,3 +112,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'weibos/media/')
 
 STATIC_URL = '/weibos/static/'
 MEDIA_URL = '/weibos/media/'
+
+
+
+CRONJOBS = [
+    ('*/1 * * * *', 'weibos.apps.sina.crontab.send_sina_weibo', [], {}, '>> /tmp/sina/send_weibo.log'),
+]
