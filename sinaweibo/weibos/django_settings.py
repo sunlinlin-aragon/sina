@@ -16,7 +16,6 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 location = lambda x: os.path.join(os.path.dirname(os.path.realpath(__file__)), x)
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -119,6 +118,7 @@ MEDIA_URL = '/weibos/media/'
 
 CRONJOBS = [
     ('*/1 * * * *', 'weibos.apps.sina.crontab.send_sina_weibo', [], {}, '>> /tmp/sina/send_weibo.log'),
+    # ('*/1 * * * *', 'weibos.apps.sina.crontab.send_sina_weibo', [], {}, '>> /home/sll/workspace/SinaWeibo/sinaweibo/weibos/logs/send_weibo.log'),
 ]
 
 

@@ -38,4 +38,7 @@ class Article(models.Model):
     def get_params(self):
         return  model_to_dict(self)
 
+    def get_admin_url(self):
+        return '/admin/sina/article/%s/change/' % self.pk
+
 

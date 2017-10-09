@@ -2,6 +2,8 @@ sudo apt-get install libmysqld-dev
 sudo apt-get install mysql-server  安装mysql
 pip install MySQL-python           安装mysqldb
 
+配置日志文件
+
 
 后台帐号 weibo_admin/weibo_123456
 
