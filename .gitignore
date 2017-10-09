@@ -57,8 +57,8 @@ docs/_build/
 target/
 
 .idea/
-bearth/media
-bearth/static
-bearth/tmp/
+sinaweibo/weibos/media
+sinaweibo/weibos/static
+sinaweibo/weibo/logs
 bearth/ordercsv/
 bearth/settings.py
