@@ -25,7 +25,7 @@ SECRET_KEY = '5o2r!&6m6dim#9f-&h(z4jw7wyh=gk378j1$ha68enszuvk7(@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '360ks.net']
 
 
 # Application definition
@@ -110,6 +110,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 MEDIA_ROOT = os.path.join(BASE_DIR, 'weibos/media/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'weibos/static/')
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
