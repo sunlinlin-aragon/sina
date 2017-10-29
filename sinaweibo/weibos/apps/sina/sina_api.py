@@ -225,5 +225,5 @@ def get_sina_weibo_access_token():
     requests = client.request_access_token(code[0])
     access_token = requests.access_token
     sina_log.info('access_token: %s' % access_token)
-    SinaApiData.objects.get_or_create(code=code, access_token=access_token)
+    SinaApiData.objects.get_or_create(code=code, token=access_token)
     return access_token
