@@ -13,12 +13,8 @@ from weibo import APIClient
 import re, json
 import urllib, urllib2, urllib3, cookielib
 import base64, rsa, binascii
+from django.conf import settings
 
-REDIRECT_URL = 'http://open.weibo.com'
-APP_KEY = '669645614'
-APP_SECRET = '2ae40f274d7f721436dfeeff9b4b0e59'
-USER_NAME = 'xiao13331293975@163.com'
-PASSWORD = '13331293975'
 
 sina_log = get_file_logger('sina_api_log')
 
@@ -221,9 +217,9 @@ class SinaAPI():
 
 
 def get_sina_weibo_access_token():
-    client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET, redirect_uri=REDIRECT_URL)
+    client = APIClient(app_key=settings.APP_KEY, app_secret=settings.APP_SECRET, redirect_uri=settings.REDIRECT_URL)
     CALLBACK_URL = client.get_authorize_url()
-    API = SinaAPI(CALLBACK_URL, APP_KEY, REDIRECT_URL, USER_NAME, PASSWORD)
+    API = SinaAPI(CALLBACK_URL, settings.APP_KEY, settings.REDIRECT_URL, settings.USER_NAME, settings.PASSWORD)
     code = API.get_code_Security()
     sina_log.info('sina code %s' % code)
     requests = client.request_access_token(code[0])
