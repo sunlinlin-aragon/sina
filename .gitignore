@@ -58,7 +58,7 @@ target/
 
 .idea/
 sinaweibo/weibos/media
-sinaweibo/weibos/static
+#sinaweibo/weibos/static
 sinaweibo/weibo/logs
 bearth/ordercsv/
-bearth/settings.py
+sinaweibo/weibos/settings.py
