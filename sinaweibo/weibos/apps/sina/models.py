@@ -36,7 +36,13 @@ class Article(models.Model):
         return self.title
 
     def get_params(self):
-        return  model_to_dict(self)
+        param = model_to_dict(self)
+        param.pop('is_send', '')
+        param.pop('send_datetime', '')
+        param.pop('created_datetime', '')
+        param.pop('id', '')
+        param['cover'] = 'http://www.360ks.net' + param['cover'].url
+        return param
 
     def get_admin_url(self):
         return '/admin/sina/article/%s/change/' % self.pk
