@@ -13,6 +13,8 @@ def send_sina_weibo(*args, **kwargs):
             params = article.get_params()
             params['access_token'] = sina_token
             response = requests.post(settings.ARTICLE, data=params)
+            article.is_send = True
+            article.save(update_fields=['is_send'])
             print response
         print 'send success'
     except Exception, e:
