@@ -124,7 +124,7 @@ STATICFILES_DIRS = [
 
 
 CRONJOBS = [
-    ('*/1 * * * *', 'weibos.apps.sina.crontab.send_sina_weibo', [], {}, '>> /tmp/sina/send_weibo.log'),
+    ('*/10 * * * *', 'weibos.apps.sina.crontab.send_sina_weibo', [], {}, '>> /tmp/sina/send_weibo.log'),
     # ('*/1 * * * *', 'weibos.apps.sina.crontab.send_sina_weibo', [], {}, '>> /home/sll/workspace/SinaWeibo/sinaweibo/weibos/logs/send_weibo.log'),
 ]
 
