@@ -47,4 +47,82 @@ class Article(models.Model):
     def get_admin_url(self):
         return '/admin/sina/article/%s/change/' % self.pk
 
+    @staticmethod
+    def add_url():
+        return "/admin/sina/article/add/"
 
+
+class Banner(models.Model):
+    title = models.CharField(max_length=64, verbose_name='Banner 标题')
+    banner_file = models.ImageField(upload_to='banner', verbose_name='图片地址', max_length=128)
+    link = models.CharField(max_length=128, verbose_name='banner 链接')
+    created_datetime = models.DateTimeField(auto_now_add=True)
+    is_send = models.BooleanField(default=False, verbose_name='是否发布')
+
+    def __str__(self):
+        return self.title
+
+    def get_admin_url(self):
+        return '/admin/sina/banner/%s/change/' % self.pk
+
+    @staticmethod
+    def add_url():
+        return "/admin/sina/banner/add/"
+
+
+class Category(models.Model):
+    title = models.CharField(max_length=64, verbose_name='考试类别', unique=True)
+    created_datetime = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+    def get_admin_url(self):
+        return '/admin/sina/category/%s/change/' % self.pk
+
+    @staticmethod
+    def add_url():
+        return "/admin/sina/category/add/"
+
+
+level = (('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'),('5', '5'))
+
+
+class ExaminationPointCategory(models.Model):
+    title = models.CharField(max_length=64, verbose_name='考点类别名称', unique=True)
+    level = models.CharField(choices=level, max_length=64, verbose_name='考点级别')
+    category = models.ForeignKey(Category, verbose_name='考试类别')
+    examination_point = models.ManyToManyField("self", verbose_name='考点类别', blank=True, null=True)
+    created_datetime = models.DateTimeField(auto_now_add=True)
+    is_send = models.BooleanField(default=False, verbose_name='是否发布')
+
+    def __str__(self):
+        return '%s--级别--%s' % (self.title, self.level)
+
+    def get_admin_url(self):
+        return '/admin/sina/examinationpointcategory/%s/change/' % self.pk
+
+    @staticmethod
+    def add_url():
+        return "/admin/sina/examinationpointcategory/add/"
+
+
+class Questions(models.Model):
+    title = models.CharField(max_length=512, verbose_name='问题标题')
+    answer = models.CharField(max_length=16, verbose_name='问题答案')
+    answer_description = models.CharField(max_length=1028, verbose_name='答案描述')
+    category = models.ForeignKey(Category, verbose_name='考试类别')
+    examination_point = models.ManyToManyField(ExaminationPointCategory, verbose_name='考点类别', blank=True, null=True)
+    created_datetime = models.DateTimeField(auto_now_add=True)
+    is_send = models.BooleanField(default=False, verbose_name='是否发布')
+    look_num = models.BigIntegerField(verbose_name='浏览次数')
+
+    def __str__(self):
+        return '%s' % self.title
+
+    def get_admin_url(self):
+        return '/admin/sina/questions/%s/change/' % self.pk
+
+    @staticmethod
+    def add_url():
+        return "/admin/sina/questions/add/"

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from weibos.apps.sina.models import Article, SinaApiData
+from weibos.apps.sina.models import Article, SinaApiData, Banner, Category, ExaminationPointCategory
 # Register your models here.
 
 
@@ -9,5 +9,25 @@ class ArticleAdmin(admin.ModelAdmin):
     list_display = ('title', 'send_datetime', 'is_send')
 
 
+class BannerAdmin(admin.ModelAdmin):
+    search_fields = ('title',)
+    list_max_show_all = 20
+    list_display = ('title', 'created_datetime', 'is_send')
+
+
+class CategoryAdmin(admin.ModelAdmin):
+    search_fields = ('title',)
+    list_max_show_all = 20
+    list_display = ('title', 'created_datetime')
+
+
+class ExaminationPointCategoryAdmin(admin.ModelAdmin):
+    search_fields = ('title',)
+    list_max_show_all = 20
+    list_display = ('title', 'level', 'category', 'created_datetime', 'is_send')
+
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(SinaApiData)
+admin.site.register(Banner, BannerAdmin)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(ExaminationPointCategory, ExaminationPointCategoryAdmin)
