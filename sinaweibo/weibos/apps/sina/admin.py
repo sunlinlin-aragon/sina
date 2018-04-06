@@ -11,19 +11,19 @@ class ArticleAdmin(admin.ModelAdmin):
 
 class BannerAdmin(admin.ModelAdmin):
     search_fields = ('title',)
-    list_max_show_all = 20
+    list_per_page = 20
     list_display = ('title', 'created_datetime', 'is_send')
 
 
 class CategoryAdmin(admin.ModelAdmin):
     search_fields = ('title',)
-    list_max_show_all = 20
+    list_per_page = 20
     list_display = ('title', 'created_datetime')
 
 
 class ExaminationPointCategoryAdmin(admin.ModelAdmin):
     search_fields = ('title',)
-    list_max_show_all = 20
+    list_per_page = 5
     list_display = ('title', 'level', 'category', 'created_datetime', 'is_send')
 
 admin.site.register(Article, ArticleAdmin)

@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
 from django.forms.models import model_to_dict
+from django.core.urlresolvers import reverse
 
 
 # Create your models here.
@@ -97,14 +98,18 @@ class ExaminationPointCategory(models.Model):
     is_send = models.BooleanField(default=False, verbose_name='是否发布')
 
     def __str__(self):
-        return '%s--级别--%s' % (self.title, self.level)
+        '''
+        这里影响前台的选择
+        :return:
+        '''
+        return '%s--级别--%s--category--%s' % (self.title, self.level, self.category)
 
     def get_admin_url(self):
-        return '/admin/sina/examinationpointcategory/%s/change/' % self.pk
+        return reverse('examination_point_category_update', kwargs={'pk': self.pk})
 
     @staticmethod
     def add_url():
-        return "/admin/sina/examinationpointcategory/add/"
+        return reverse('examination_point_category_create')
 
 
 class Questions(models.Model):

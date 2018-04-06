@@ -15,14 +15,18 @@
 {% if app_list %}
   <table>
      <tr class="model-{{ model.object_name|lower }}">
-          <th scope="row">文章名字：</th>
-          <th scope="row">发布时间：</th>
-          <th scope="row">是否发布：</th>
+         <th scope="row">考点类别名称：</th>
+         <th scope="row">考试类别：</th>
+         <th scope="row">考点类别级别：</th>
+         <th scope="row">考点类别创建时间：</th>
+         <th scope="row">是否发布：</th>
       </tr>
     {% for app in app_list %}
       <tr class="model-{{ model.object_name|lower }}">
           <td><a href="{{ app.get_admin_url }}" class="addlink">{{ app.title }}</a></td>
-          <td>{{ app.send_datetime }}</td>
+          <td>{{ app.category }}</td>
+          <td>{{ app.level }}</td>
+          <td>{{ app.created_datetime }}</td>
           <td>{{ app.is_send }}</td>
       </tr>
     {% endfor %}
@@ -33,34 +37,3 @@
 </div>
 {% endblock %}
 
-{% block sidebar %}
-<div id="content-related">
-    <div class="module" id="recent-actions-module">
-        <h2>{% trans 'Recent actions' %}</h2>
-        <h3>{% trans 'My actions' %}</h3>
-            {% load log %}
-            {% get_admin_log 10 as admin_log for_user user %}
-            {% if not admin_log %}
-            <p>{% trans 'None available' %}</p>
-            {% else %}
-            <ul class="actionlist">
-            {% for entry in admin_log %}
-            <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
-                {% if entry.is_deletion or not entry.get_admin_url %}
-                    {{ entry.object_repr }}
-                {% else %}
-                    <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
-                {% endif %}
-                <br/>
-                {% if entry.content_type %}
-                    <span class="mini quiet">{% filter capfirst %}{{ entry.content_type }}{% endfilter %}</span>
-                {% else %}
-                    <span class="mini quiet">{% trans 'Unknown content' %}</span>
-                {% endif %}
-            </li>
-            {% endfor %}
-            </ul>
-            {% endif %}
-    </div>
-</div>
-{% endblock %}

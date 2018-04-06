@@ -6,4 +6,9 @@
 <h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('360ks administration') }}</a></h1>
 {% endblock %}
 
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="/dashboard/">Home</a>
+    </div>
+{% endblock %}
 {% block nav-global %}{% endblock %}

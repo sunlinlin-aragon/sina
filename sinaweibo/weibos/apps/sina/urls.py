@@ -10,4 +10,7 @@ urlpatterns = [
     url(r'^examination_point_category_list/$', views.models_list, {'obj': ExaminationPointCategory}, name='examination_point_category_list'),
     url(r'^questions_list/$', views.models_list, {'obj': Questions}, name='questions_list'),
     url(r'^banner_list/$', views.models_list, {'obj': Banner}, name='banner_list'),
+    url(r'^examination_point_category/create/$', views.ExaminationPointCategoryCreateOrUpdate.as_view(), name='examination_point_category_create'),
+    url(r'^examination_point_category/(?P<pk>\d+)/update/$', views.ExaminationPointCategoryCreateOrUpdate.as_view(), name='examination_point_category_update'),
+
 ]

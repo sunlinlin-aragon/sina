@@ -1,0 +1,72 @@
+{% extends "base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block extrahead %}{{ block.super }}
+<script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+{{ media }}
+{% endblock %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />{% endblock %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="/dashboard/">Home</a>
+        <a href="/dashboard/examination_point_category_list/"> › List</a>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div id="content-main">
+        <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form" novalidate>{% csrf_token %}{% block form_top %}{% endblock %}
+            {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="save">
+        </form>
+    </div>
+
+
+    <script type="application/javascript">
+        $('#id_level').change(function(){
+            $('.errorlist').hide();
+            if($(this).val() == '1'){
+                $('#id_examination_point').parent().hide();
+                $('#id_category').parent().show();
+                show_point($(this).val());
+            }else{
+                $('#id_category').parent().hide();
+                $('#id_examination_point').parent().show();
+                hide_point($(this).val())
+            }
+        });
+
+        function hide_point(level) {
+            show_point();
+            $('#id_examination_point').find('option').each(function (val) {
+                var option_level = this.text.split('--')[2];
+                if(parseInt(option_level) >= parseInt(level)){
+                    $(this).hide();
+                }
+            })
+        }
+        function show_point(val) {
+            $('#id_examination_point').find('option').show();
+        }
+
+        function init_pages() {
+            var level = $('#id_level').val
+            if(level == '1'){
+                $('#id_examination_point').parent().hide();
+                $('#id_category').parent().show();
+                show_point($(this).val());
+            }else{
+                $('#id_category').parent().hide();
+                $('#id_examination_point').parent().show();
+                hide_point($(this).val())
+            }
+        }
+        init_pages()
+    </script>
+{% endblock %}
