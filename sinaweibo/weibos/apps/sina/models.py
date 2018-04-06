@@ -126,3 +126,14 @@ class Questions(models.Model):
     @staticmethod
     def add_url():
         return "/admin/sina/questions/add/"
+
+
+class QuestionItems(models.Model):
+    question = models.ForeignKey(Questions)
+    item_num = models.CharField(max_length=512, verbose_name='问题选项序号', )
+    item_des = models.CharField(max_length=512, verbose_name='问题选项描述')
+
+    created_datetime = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+            unique_together = ("question", "item_num")
