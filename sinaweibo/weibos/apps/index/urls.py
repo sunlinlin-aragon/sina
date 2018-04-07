@@ -7,5 +7,7 @@ urlpatterns = [
     url(r'^$', views.home_page, name='home'),
     url(r'^home/(?P<id>\d+)/$', views.home_page, name='home'),
     url(r'^home/list/$', views.home_page, name='home'),
-    url(r'^examination/$', views.examination_page, {'obj': ExaminationPointCategory}, name='examination_page'),
+    url(r'^examination/(?P<id>\d+)/$', views.examination_list_page, name='examination_list_page'),
+    url(r'^list_page/(?P<id>\d+)/$', views.list_page, name='list_page'),
+    url(r'^question/(?P<id>\d+)/$', views.question_page, name='question_page'),
 ]

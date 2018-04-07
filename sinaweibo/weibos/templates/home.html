@@ -20,10 +20,10 @@
 {% block body_content %}
   <div class="header-navbar">
     <div class="nav-exam">
-      <span><img src="/static/img/test.jpg" alt="360考试"></span>    
+      <span><a href="/"><img src="/static/img/test.jpg" alt="360考试"></a></span>
     </div>
     <div class="nav-focus">
-      <span><img src="/static/img/focus.jpg" alt="考点"></span>
+      <span><a href="/examination/1/"><img src="/static/img/focus.jpg" alt="考点"></a></span>
     </div>
   </div>
   <!-- carousel 轮播图 -->
@@ -56,12 +56,14 @@
     <div class="question-thum__tile">
       {% for question in questions %}
         <div class="summary">
-          <a class="ques_title" href="{{ question.id }}">{{ question.title|safe }}</a>
+          <a class="ques_title" href="/question/{{ question.id }}/">{{ question.title|safe }}</a>
           <div class="link-overview"><span>{{ question.look_num|safe }}已学</span></div>
         </div>
       {% endfor %}
     </div>
   </div>
+  <input type="hidden" name="page_number" value="{{ page_number }}" />
+  <input type="hidden" name="page_range" value="{{ page_range }}" />
   <script>
     $(function() {
       var swiper = new Swiper('.swiper-container', {
@@ -83,13 +85,35 @@
        autoplayHoverPause: true
     });
 
-    $(function() {
-      var product_height = $('.summary').first().height();
-      var still_looking_height = $('.still-looking').height() ? $('.still-looking').height() : 0;
-      var product_count = 10;
-      if ( $(window).scrollTop() >= $(document).height() - $('#footer').height() - $(window).height() - still_looking_height - product_height * product_count) {
-        o.fetch_more_products();
+    $(window).scroll(function(){      
+      var question_height = $('.summary').first().height();
+      if ( $(window).scrollTop() >= $(document).height() - $(window).height() - 1) {
+        fetch_more_questions();
       }
     });
+
+    function fetch_more_questions(){
+      var page_number = parseInt($('input[name=page_number]').val(), 10) + 1;
+      var page_range = $('input[name=page_range]').val();
+      if (page_number > page_range){
+        return
+      }
+      var request_params = {'page': page_number, 'id': '{{ active_id }}'};
+      $('input[name=page_number]').val(page_number);
+      more_questions = $.ajax({
+        url: '/home/list/',
+        type: 'GET',
+        data: request_params,
+        success: function(result){
+          var questions_info = result['questions'];
+          for(i=0; i<questions_info.length; i++) {
+            $('.question-thum__tile').append('<div class="summary">\
+                                <a class="ques_title" href="[link]">[title]</a>\
+                                <div class="link-overview"><span>[number]已学</span></div>\
+                                </div>'.replace('[link]', questions_info[i].id).replace('[title]', questions_info[i].title).replace('[number]', questions_info[i].look_num));
+          }
+        },
+      })
+    }
   </script>
 {% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}最新【考试类别】考试知识点和真题大全{% endblock %}
+{% block meta_keywords %}考试类别，考试类别+考试；考试类别+真题；临床执业医师考试知识点{% endblock %}
+{% block meta_description %}最新【考试类别】考试知识点和真题，上360考试网。{% endblock %}
+
+{% block extrastyle %}
+  <meta charset="UTF-8">
+  <title>rem test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link href="/static/css/swiper.min.css" rel="stylesheet">
+  <link href="/static/css/owl.carousel.min.css" rel="stylesheet">
+  <link href="/static/css/normal.css" rel="stylesheet">
+{% endblock %}
+
+{% block extrahead %}
+  <script src="/static/js/rootsize.js"></script>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block body_content %}
+  <div class="que-item__panel">
+    <div class="header-navbar">
+      <div class="nav-exam">
+        <span><a href="/"><img src="/static/img/test.jpg" alt="360考试"></a></span>
+      </div>
+      <div class="nav-focus">
+        <span><a href="/examination/1/"><img src="/static/img/focus.jpg" alt="考点"></a></span>
+      </div>
+    </div>
+    <div class="">
+      <div class="exam-focus__tile exam-focus__tile--list">
+          <div class="focus_list">
+              <a href="">骨折</a>
+              <a href="">股骨颈头</a>
+          </div>
+      </div>
+      <div class="question-item__tile">
+        <div>
+          <p class="ques_title"><span class="flag"></span> <span class="title">{{ question_info.title|safe }}</span> </p>
+          <ul class="ques-ans">
+            {% for item in question_item %}
+              <li class="ans-item">
+                {{ item.item_num|safe }}. {{ item.item_des }}
+              </li>
+            {% endfor %}
+          </ul>
+          <div class="ans-detail__wrapper">
+            <p class="detail-wrap">
+              <a href="javascript:void(0)"><span class="flag"></span>查看答案 》</a>
+            </p>
+            <div class="ans-detail">
+                <!-- hidden -->
+                <p class="ans_option">
+                  <span class="flag"></span>答案: <span>{{ question_info.answer|safe }}</span>
+                </p>
+                <div>
+                  <span class="title"></span>试题解析：<span class="content">{{ question_info.answer_description|safe }}</span>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    var Ans_btn = $(".detail-wrap a");
+    var Ans_wrapper = $(".ans-detail");
+    Ans_btn.click(function(event) {
+        Ans_wrapper.toggleClass('block');
+    });
+  </script>
+{% endblock %}

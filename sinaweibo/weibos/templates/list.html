@@ -8,7 +8,6 @@
   <meta charset="UTF-8">
   <title>rem test</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="/static/css/base.css">
   <link href="/static/css/swiper.min.css" rel="stylesheet">
   <link href="/static/css/owl.carousel.min.css" rel="stylesheet">
   <link href="/static/css/normal.css" rel="stylesheet">
@@ -29,22 +28,19 @@
       <span><a href="/examination/1/"><img src="/static/img/focus.jpg" alt="考点"></a></span>
     </div>
   </div>
-  <div class="exam-category__wrapper">
-    <div class="exam-category__tile">
-      <div class="title">选择考试类别：</div>
-      <div class="category_list">
-        {% for category in category_list %}
-          <a {% if active_id == category.id %}class="active"{% endif %} href="/examination/{{ category.id }}/">{{ category.title|safe }}</a>
-        {% endfor %}
+  <div class="">
+    <div class="exam-focus__tile exam-focus__tile--list">
+      <div class="focus_list">
+        <a>{{ examination_point.title }}</a>
       </div>
     </div>
-    <div class="exam-focus__tile">
-      <div class="title">选择考点：</div>
-      <div class="focus_list">
-        {% for i in examination_point %}
-          <a href="/list_page/{{ i.id }}/">{{ i.title|safe }}</a>
-        {% endfor %}
-      </div>
+    <div class="question-thum__tile">
+      {% for question in questions %}
+        <div class="summary">
+          <a class="ques_title" href="/question/{{ question.id }}/">{{ forloop.counter }}. {{ question.title|safe }}</a>
+          <div class="link-overview"><span>{{ question.look_num|safe }}</span></div>
+        </div>
+      {% endfor %}
     </div>
   </div>
 {% endblock %}
