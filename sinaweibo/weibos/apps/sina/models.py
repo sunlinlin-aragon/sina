@@ -138,7 +138,10 @@ class Questions(models.Model):
         return list(chain(examination_point, category))
 
     class Meta:
-        ordering = ['look_num', '-created_datetime']
+        ordering = ['-look_num', '-created_datetime']
+
+    def get_related_point(self):
+        return self.category.examinationpointcategory_set.all()
 
 
 item_num_level = (('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'), ('E', "E"), ('F', 'F'), ('G', 'G'), ('H', 'H'))

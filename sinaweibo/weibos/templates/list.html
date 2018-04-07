@@ -39,7 +39,7 @@
       {% for question in questions %}
         <div class="summary">
           <a class="ques_title" href="/question/{{ question.id }}/">{{ question.title|safe }}</a>
-          <div class="link-overview"><span>{{ question.look_num|safe }}</span></div>
+          <div class="link-overview"><span>{{ question.look_num|safe }} 人已学</span></div>
         </div>
       {% endfor %}
     </div>

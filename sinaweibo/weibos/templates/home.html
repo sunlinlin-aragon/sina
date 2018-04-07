@@ -37,7 +37,7 @@
       <div class="item">
         <a href="{{ item.link|safe }}">
           <!-- 图片要是 750:300 比例的 -->
-          <img src="{{ item.banner_file.url|safe }}" alt="">
+          <img width="750" height="300" src="{{ item.banner_file.url|safe }}" alt="">
           <h4 class="h4">{{ item.title|safe }}</h4>
         </a>
       </div>
@@ -62,7 +62,7 @@
       {% for question in questions %}
         <div class="summary">
           <a class="ques_title" href="/question/{{ question.id }}/">{{ question.title|safe }}</a>
-          <div class="link-overview"><span>{{ question.look_num|safe }}已学</span></div>
+          <div class="link-overview"><span>{{ question.look_num|safe }} 人已学</span></div>
         </div>
       {% endfor %}
     </div>

@@ -50,7 +50,7 @@ def list_page(request, id=1):
     template = 'list.html'
     if request.is_ajax():
         id = request.GET.get('id') or 1
-    examination_point = ExaminationPointCategory.objects.filter(category_id=id).first()
+    examination_point = ExaminationPointCategory.objects.filter(id=id).first()
     questions = examination_point.questions_set.all().order_by('-look_num').values('id', 'title', 'look_num')
     paginator = Paginator(questions, 10)
     if request.is_ajax():

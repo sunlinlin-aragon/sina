@@ -15,14 +15,16 @@
 {% if app_list %}
   <table>
      <tr class="model-{{ model.object_name|lower }}">
-          <th scope="row">文章名字：</th>
-          <th scope="row">发布时间：</th>
-          <th scope="row">是否发布：</th>
+         <th scope="row">问题标题：</th>
+         <th scope="row">category：</th>
+         <th scope="row">创建时间：</th>
+         <th scope="row">是否发布：</th>
       </tr>
     {% for app in app_list %}
       <tr class="model-{{ model.object_name|lower }}">
           <td><a href="{{ app.get_admin_url }}" class="addlink">{{ app.title }}</a></td>
-          <td>{{ app.send_datetime }}</td>
+          <td>{{ app.category.title }}</td>
+          <td>{{ app.created_datetime }}</td>
           <td>{{ app.is_send }}</td>
       </tr>
     {% endfor %}

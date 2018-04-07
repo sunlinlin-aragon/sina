@@ -33,8 +33,9 @@
     <div class="">
       <div class="exam-focus__tile exam-focus__tile--list">
           <div class="focus_list">
-              <a href="">骨折</a>
-              <a href="">股骨颈头</a>
+              {% for point in question_info.get_related_point %}
+              <a href="/list_page/{{ point.id }}/">{{ point.title }}</a>
+              {% endfor %}
           </div>
       </div>
       <div class="question-item__tile">
