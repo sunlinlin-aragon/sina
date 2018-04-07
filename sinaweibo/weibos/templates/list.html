@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
-{% block title %}最新【考试类别】考试知识点和真题大全{% endblock %}
-{% block meta_keywords %}考试类别，考试类别+考试；考试类别+真题；临床执业医师考试知识点{% endblock %}
-{% block meta_description %}最新【考试类别】考试知识点和真题，上360考试网。{% endblock %}
+{% block title %}最新{{ meta_title|safe }}考试知识点和真题大全{% endblock %}
+{% block meta_keywords %}考点，考点+真题；考点+知识点{% endblock %}
+{% block meta_description %}最新{{ meta_title|safe }}考试知识点和真题，上360考试网。{% endblock %}
 
 {% block extrastyle %}
   <meta charset="UTF-8">
@@ -38,10 +38,45 @@
     <div class="question-thum__tile">
       {% for question in questions %}
         <div class="summary">
-          <a class="ques_title" href="/question/{{ question.id }}/">{{ forloop.counter }}. {{ question.title|safe }}</a>
+          <a class="ques_title" href="/question/{{ question.id }}/">{{ question.title|safe }}</a>
           <div class="link-overview"><span>{{ question.look_num|safe }}</span></div>
         </div>
       {% endfor %}
     </div>
   </div>
+  <input type="hidden" name="page_number" value="{{ page_number }}" />
+  <input type="hidden" name="page_range" value="{{ page_range }}" />
+
+  <script>
+    $(window).scroll(function(){
+      var question_height = $('.summary').first().height();
+      if ( $(window).scrollTop() >= $(document).height() - $(window).height() - 1) {
+        fetch_more_questions();
+      }
+    });
+
+    function fetch_more_questions(){
+      var page_number = parseInt($('input[name=page_number]').val(), 10) + 1;
+      var page_range = $('input[name=page_range]').val();
+      if (page_number > page_range){
+        return
+      }
+      var request_params = {'page': page_number, 'id': '{{ active_id }}'};
+      $('input[name=page_number]').val(page_number);
+      more_questions = $.ajax({
+        url: '/list_page/list/',
+        type: 'GET',
+        data: request_params,
+        success: function(result){
+          var questions_info = result['questions'];
+          for(i=0; i<questions_info.length; i++) {
+            $('.question-thum__tile').append('<div class="summary">\
+                                <a class="ques_title" href="/question/[link]/">[title]</a>\
+                                <div class="link-overview"><span>[number]已学</span></div>\
+                                </div>'.replace('[link]', questions_info[i].id).replace('[title]', questions_info[i].title).replace('[number]', questions_info[i].look_num));
+          }
+        },
+      })
+    }
+  </script>
 {% endblock %}

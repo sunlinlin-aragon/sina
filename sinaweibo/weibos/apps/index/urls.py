@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^home/list/$', views.home_page, name='home'),
     url(r'^examination/(?P<id>\d+)/$', views.examination_list_page, name='examination_list_page'),
     url(r'^list_page/(?P<id>\d+)/$', views.list_page, name='list_page'),
+    url(r'^list_page/list/$', views.list_page, name='list_page'),
     url(r'^question/(?P<id>\d+)/$', views.question_page, name='question_page'),
 ]

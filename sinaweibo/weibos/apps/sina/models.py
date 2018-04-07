@@ -132,6 +132,11 @@ class Questions(models.Model):
     def add_url():
         return reverse('questions_create')
 
+    def get_info(self):
+        examination_point = self.examination_point.all().values('title')
+        category = self.category.examinationpointcategory_set.all().values('title')
+        return list(chain(examination_point, category))
+
     class Meta:
         ordering = ['look_num', '-created_datetime']
 
@@ -147,4 +152,5 @@ class QuestionItems(models.Model):
     created_datetime = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-            unique_together = ("question", "item_num")
+        unique_together = ("question", "item_num")
+        ordering = ['item_num']
