@@ -7,10 +7,10 @@
     <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
     {% block extrastyle %}{% endblock %}
     {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}" />{% endif %}
+    <script src="/static/js/jquery-3.2.1.min.js"></script>
     {% block extrahead %}{% endblock %}
     {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
     <link rel="SHORTCUT ICON" href="/static/img/favicon.ico" type="image/x-icon">
-    <script src="/static/js/jquery-3.2.1.min.js"></script>
   </head>
 
   {% load i18n %}

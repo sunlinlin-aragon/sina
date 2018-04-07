@@ -6,7 +6,6 @@ from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-
 from .models import Article, ExaminationPointCategory
 from .forms import ExaminationPointCategoryForm
 
@@ -76,3 +75,4 @@ class ExaminationPointCategoryCreateOrUpdate(generic.UpdateView):
                          "correct the errors below"))
         ctx = self.get_context_data(form=form)
         return self.render_to_response(ctx)
+
