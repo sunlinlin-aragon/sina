@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block extrastyle %}
+  <meta charset="UTF-8">
+  <title>rem test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="/static/css/swiper.min.css" rel="stylesheet">
+  <link href="/static/css/owl.carousel.min.css" rel="stylesheet">
+  <link href="/static/css/normal.css" rel="stylesheet">
+{% endblock %}
+
+{% block extrahead %}
+  <script src="/static/js/rootsize.js"></script>
+  <script src="/static/js/swiper.min.js"></script>
+  <script src="/static/js/owl.carousel.js"></script>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block body_content %}
+  <div class="header-navbar">
+    <div class="nav-exam">
+      <span><img src="/static/img/test.jpg" alt="360考试"></span>    
+    </div>
+    <div class="nav-focus">
+      <span><img src="/static/img/focus.jpg" alt="考点"></span>
+    </div>
+  </div>
+  <!-- carousel 轮播图 -->
+  <div class="owl-carousel owl-theme">
+    {% for item in banner_info %}
+      <div class="item">
+        <a href="{{ item.link|safe }}">
+          <!-- 图片要是 750:300 比例的 -->
+          <img src="{{ item.banner_file.url|safe }}" alt="">
+          <h4 class="h4">{{ item.title|safe }}</h4>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+  <!-- end carousel -->
+  <!--  navbar滚动导航 -->
+  <div class="topmenu">
+      <div class="swiper-container">
+        <div class="swiper-wrapper swiper-wrapper-theme">
+          {% for menu in menu_info %}
+            <a href="/home/{{ menu.id }}/">
+              <span class="swiper-slide{% if active_id == menu.id %} active{% endif %}">{{ menu.title|safe }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+  </div>
+  <!-- end navbar 滚动导航 -->
+  <div class="">
+    <div class="question-thum__tile">
+      {% for question in questions %}
+        <div class="summary">
+          <a class="ques_title" href="{{ question.id }}">{{ question.title|safe }}</a>
+          <div class="link-overview"><span>{{ question.look_num|safe }}已学</span></div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <script>
+    $(function() {
+      var swiper = new Swiper('.swiper-container', {
+          spaceBetween: 20,
+          slidesPerView: 'auto',
+          freeMode: true
+      });
+    });
+  </script>
+  <script>
+    var owl = $('.owl-carousel');
+    owl.owlCarousel({
+      items: 1,
+      loop: true,
+      //margin: 10,
+      autoplay: true,
+      autoplayTimeout: 4000,
+      // singleItem:true,
+       autoplayHoverPause: true
+    });
+
+    $(function() {
+      var product_height = $('.summary').first().height();
+      var still_looking_height = $('.still-looking').height() ? $('.still-looking').height() : 0;
+      var product_count = 10;
+      if ( $(window).scrollTop() >= $(document).height() - $('#footer').height() - $(window).height() - still_looking_height - product_height * product_count) {
+        o.fetch_more_products();
+      }
+    });
+  </script>
+{% endblock %}
