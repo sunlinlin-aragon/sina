@@ -6,8 +6,8 @@ from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from .models import Article, ExaminationPointCategory
-from .forms import ExaminationPointCategoryForm
+from .models import Article, ExaminationPointCategory, Questions
+from .forms import ExaminationPointCategoryForm, QuestionsForm, QuestionsFormSet
 
 
 @login_required(login_url='/admin/login/')
@@ -76,3 +76,79 @@ class ExaminationPointCategoryCreateOrUpdate(generic.UpdateView):
         ctx = self.get_context_data(form=form)
         return self.render_to_response(ctx)
 
+
+class QuestionsCreateUpdateView(generic.UpdateView):
+
+    template_name = 'questions_create.html'
+    model = Questions
+    context_object_name = 'Questions'
+    form_class = QuestionsForm
+    questions_formset = QuestionsFormSet
+    pk_url_kwarg = 'pk'
+    success_url = '/dashboard/questions_list/'
+
+    def __init__(self, *args, **kwargs):
+        super(QuestionsCreateUpdateView, self).__init__(*args, **kwargs)
+        self.formsets = {'questions_formset': self.questions_formset}
+
+    def get_object(self, queryset=None):
+
+        self.creating = 'pk' not in self.kwargs
+        if self.creating:
+            return None  # success
+        else:
+            obj = super(QuestionsCreateUpdateView, self).get_object(queryset)
+            return obj
+
+    def get_context_data(self, **kwargs):
+        ctx = super(QuestionsCreateUpdateView, self).get_context_data(**kwargs)
+        ctx['form'] = kwargs.get('form') or QuestionsForm(instance=self.object)
+        for ctx_name, formset_class in self.formsets.items():
+            if ctx_name not in ctx:
+                ctx[ctx_name] = formset_class(instance=self.object)
+        return ctx
+
+    def get_form_kwargs(self):
+        kwargs = super(QuestionsCreateUpdateView, self).get_form_kwargs()
+        return kwargs
+
+    def process_all_forms(self, form):
+        if self.creating and form.is_valid():
+            self.object = form.save()
+
+        formsets = {}
+        for ctx_name, formset_class in self.formsets.items():
+            formsets[ctx_name] = formset_class(self.request.POST,
+                                               instance=self.object)
+        is_valid = form.is_valid() and all([formset.is_valid() for formset in formsets.values()])
+
+        cross_form_validation_result = self.clean(form, formsets)
+        if is_valid and cross_form_validation_result:
+            return self.forms_valid(form, formsets)
+        else:
+            return self.forms_invalid(form, formsets)
+
+    form_valid = form_invalid = process_all_forms
+
+    def clean(self, form, formsets):
+        return True
+
+    def forms_valid(self, form, formsets):
+
+        self.object = form.save()
+        for formset in formsets.values():
+            formset.save()
+
+        return HttpResponseRedirect(self.get_success_url())
+
+    def forms_invalid(self, form, formsets):
+        # delete the temporary product again
+        if self.creating and self.object and self.object.pk is not None:
+            self.object.delete()
+            self.object = None
+
+        messages.error(self.request,
+                       _("Your submitted data was not valid - please "
+                         "correct the errors below"))
+        ctx = self.get_context_data(form=form, **formsets)
+        return self.render_to_response(ctx)

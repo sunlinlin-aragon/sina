@@ -58,7 +58,7 @@ class Banner(models.Model):
     banner_file = models.ImageField(upload_to='banner', verbose_name='图片地址', max_length=128)
     link = models.CharField(max_length=128, verbose_name='banner 链接')
     created_datetime = models.DateTimeField(auto_now_add=True)
-    is_send = models.BooleanField(default=False, verbose_name='是否发布')
+    is_send = models.BooleanField(default=True, verbose_name='是否发布')
 
     def __str__(self):
         return self.title
@@ -95,7 +95,7 @@ class ExaminationPointCategory(models.Model):
     category = models.ForeignKey(Category, verbose_name='考试类别')
     examination_point = models.ManyToManyField("self", verbose_name='考点类别', blank=True, null=True)
     created_datetime = models.DateTimeField(auto_now_add=True)
-    is_send = models.BooleanField(default=False, verbose_name='是否发布')
+    is_send = models.BooleanField(default=True, verbose_name='是否发布')
 
     def __str__(self):
         '''
@@ -119,24 +119,30 @@ class Questions(models.Model):
     category = models.ForeignKey(Category, verbose_name='考试类别')
     examination_point = models.ManyToManyField(ExaminationPointCategory, verbose_name='考点类别', blank=True, null=True)
     created_datetime = models.DateTimeField(auto_now_add=True)
-    is_send = models.BooleanField(default=False, verbose_name='是否发布')
+    is_send = models.BooleanField(default=True, verbose_name='是否发布')
     look_num = models.BigIntegerField(verbose_name='浏览次数')
 
     def __str__(self):
         return '%s' % self.title
 
     def get_admin_url(self):
-        return '/admin/sina/questions/%s/change/' % self.pk
+        return reverse('questions_update', kwargs={'pk': self.pk})
 
     @staticmethod
     def add_url():
-        return "/admin/sina/questions/add/"
+        return reverse('questions_create')
+
+    class Meta:
+        ordering = ['look_num', '-created_datetime']
+
+
+item_num_level = (('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'), ('E', "E"), ('F', 'F'), ('G', 'G'), ('H', 'H'))
 
 
 class QuestionItems(models.Model):
     question = models.ForeignKey(Questions)
-    item_num = models.CharField(max_length=512, verbose_name='问题选项序号', )
-    item_des = models.CharField(max_length=512, verbose_name='问题选项描述')
+    item_num = models.CharField(choices=item_num_level, max_length=512, verbose_name='问题选项序号')
+    item_des = models.TextField(max_length=512, verbose_name='问题选项描述')
 
     created_datetime = models.DateTimeField(auto_now_add=True)
 

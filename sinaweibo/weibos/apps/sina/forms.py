@@ -3,9 +3,10 @@
 # @Time  : 2018/4/6 下午12:29
 
 from django.forms import ModelForm
-from .models import ExaminationPointCategory, Category
+from .models import ExaminationPointCategory, Category, Questions, QuestionItems
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+from django.forms import inlineformset_factory
 
 
 class ExaminationPointCategoryForm(ModelForm):
@@ -47,3 +48,29 @@ class ExaminationPointCategoryForm(ModelForm):
             # saving of m2m data.
             self.save_m2m = self._save_m2m
         return self.instance
+
+
+class QuestionsForm(ModelForm):
+    title = forms.CharField(required=True, label='问题标题', widget=forms.Textarea(attrs={'rows': 2, 'cols': 80}))
+    answer_description = forms.CharField(required=True, label='答案描述', widget=forms.Textarea(attrs={'rows': 4, 'cols': 80}))
+
+    class Meta:
+        model = Questions
+        fields = ['title', 'answer', 'answer_description', 'category', 'examination_point', 'is_send', 'look_num']
+
+    def clean_examination_point(self):
+        examination_point = self.cleaned_data['examination_point']
+        categorys = set([c.category.id for c in examination_point])
+        if len(categorys) > 1:
+            raise forms.ValidationError('考点类别部属于同一个category，请从新选择。')
+        return examination_point
+
+
+class QuestionItemsForm(ModelForm):
+
+    class Meta:
+        model = QuestionItems
+        fields = ['item_num', 'item_des']
+
+
+QuestionsFormSet = inlineformset_factory(Questions, QuestionItems, fields=('item_num', 'item_des'), extra=8)

@@ -1,0 +1,60 @@
+{% extends "base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block extrahead %}{{ block.super }}
+<script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+{{ media }}
+{% endblock %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />{% endblock %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="/dashboard/">Home</a>
+        <a href="/dashboard/examination_point_category_list/"> › List</a>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div id="content-main">
+        <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form" novalidate>{% csrf_token %}{% block form_top %}{% endblock %}
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                {{ questions_formset.management_form }}
+                {% if formset.error_msg %}
+                   {{ formset.error_msg }}
+                {% endif %}
+
+                {% for form in questions_formset %}
+                        {{ form }}<br>
+                {% endfor %}
+                <input type="submit" value="save">
+        </form>
+    </div>
+
+
+    <script type="application/javascript">
+        $('#id_category').change(function(){
+            var option = $('#id_category option:selected').text();
+            hide_point(option);
+        });
+
+        function hide_point(category) {
+            show_point();
+            $('#id_examination_point').find('option').each(function (val) {
+                var option_level = this.text.split('--')[4];
+                if(option_level != category){
+                    $(this).hide();
+                }
+            })
+        }
+        function show_point(val) {
+            $('#id_examination_point').find('option').show();
+        }
+        $('#id_category').change();
+    </script>
+{% endblock %}
