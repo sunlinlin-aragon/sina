@@ -20,12 +20,14 @@ class ExaminationPointCategoryForm(ModelForm):
         cleaned_data = self.cleaned_data
         level = cleaned_data.get('level')
         category = cleaned_data.get('category')
+        examination_point = cleaned_data['examination_point']
         if level == '1':
             if not category:
                 raise forms.ValidationError({'category': _('This field is required.')})
+            else:
+                cleaned_data['examination_point'] = []
             return cleaned_data
         else:
-            examination_point = cleaned_data['examination_point']
             if not examination_point:
                 raise forms.ValidationError({'examination_point': _('This field is required.')})
             categorys = set([c.category.id for c in examination_point])
@@ -33,7 +35,6 @@ class ExaminationPointCategoryForm(ModelForm):
                 raise forms.ValidationError({'examination_point': _('考点类别部属于同一个category，请从新选择。')})
             cleaned_data['category'] = examination_point.first().category
         return cleaned_data
-
 
     def save(self, commit=True):
         """

@@ -51,20 +51,20 @@
                 }
             })
         }
-        function show_point(val) {
+        function show_point() {
             $('#id_examination_point').find('option').show();
         }
 
         function init_pages() {
-            var level = $('#id_level').val
+            var level = $('#id_level').val();
             if(level == '1'){
                 $('#id_examination_point').parent().hide();
                 $('#id_category').parent().show();
-                show_point($(this).val());
+                show_point();
             }else{
                 $('#id_category').parent().hide();
                 $('#id_examination_point').parent().show();
-                hide_point($(this).val())
+                hide_point(level)
             }
         }
         init_pages()

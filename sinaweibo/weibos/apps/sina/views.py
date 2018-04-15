@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse
 from django.views import generic
@@ -53,6 +54,9 @@ class ExaminationPointCategoryCreateOrUpdate(generic.UpdateView):
         return ctx
 
     def process_all_forms(self, form):
+        if self.creating:
+            if ExaminationPointCategory.objects.filter(title=form.data['title']).exists():
+                form.errors.update({'title': ['%s 已经存在'% form.data['title']]})
         if self.creating and form.is_valid():
             self.object = form.save()
         is_valid = form.is_valid()
