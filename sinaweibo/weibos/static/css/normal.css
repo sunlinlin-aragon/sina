@@ -3,8 +3,8 @@
 body {
     font-size: .32rem;
     min-width: 320px;
-    background-color: #f4f4f4;  
-    /*background-color: #fff;*/
+/*    background-color: #f4f4f4;  
+*/    background-color: #fff;
     margin: 0 auto;
     line-height: 1.4128;
 }
@@ -13,6 +13,9 @@ body {
     width: 100%;
     height: 3rem;
     background-color: #6fbf98;
+}
+.owl-theme.owl-carousel .item>a{
+    display: block;
 }
 .owl-theme.owl-carousel .item .h4{
     position: absolute;
@@ -34,6 +37,13 @@ body {
 .owl-theme.owl-carousel .owl-dots .owl-dot {
     display: inline-block;
     zoom: 1;
+}
+.owl-carousel .carousel-img{
+    padding-bottom: 66.8%;
+    background-size: auto 100%;
+    background-color: #f4f4f4;
+    background-repeat: no-repeat;
+    background-position: center center; 
 }
 .owl-theme .owl-dots .owl-dot span {
     width: 10px;
@@ -76,7 +86,7 @@ body {
     width: auto !important;
     display: inline-block;
 }
-.swiper-wrapper-theme.swiper-wrapper .swiper-slide.active{
+.swiper-wrapper-theme.swiper-wrapper .swiper-slide.swiper-slide-active{
     color: #5b89ff;
 }
 .swiper-wrapper-theme.swiper-wrapper .swiper-slide .swiper-slide:first-child {
@@ -86,7 +96,7 @@ body {
 /*the start of navbar*/
 .header-navbar{
     overflow: hidden;
-    background-color: #fff;
+    /*background-color: #fff;*/
     font-size: 0;
     height: .87rem;
   /* color: #5b89ff; font-weight: 500;
@@ -114,7 +124,8 @@ body {
 .question-thum__tile{
     padding-left: .28rem;
     padding-right: .28rem;
-    background-color: #fff;
+    padding-bottom: .4rem;
+    /*background-color: #fff;*/
 }
 .question-thum__tile .summary {
     padding-top: .28rem;
@@ -140,7 +151,7 @@ body {
 /*the style fo 考试类别，重点*/
 .exam-category__wrapper{
     border-top: .2rem solid #f4f4f4;
-    background-color: #fff;
+   /* background-color: #fff;*/
 }
 .exam-category__tile{
     padding-left: .25rem;
@@ -155,7 +166,7 @@ body {
 }
 .exam-category__panel{
     height: 100%;
-    background-color: #fff;
+    /*background-color: #fff;*/
 }
 /*version1 选择考试类别 start*/
 .exam-category__tile .category_list{
@@ -167,7 +178,7 @@ body {
 }
 .exam-category__tile .category_list a{
     font-size: .30rem;
-    width: 1.5rem;
+    width: 1.6rem;
     border: 1px solid #ccc;
     border-radius: .16rem;
     margin: 0 .2rem .3rem 0rem;
@@ -221,6 +232,7 @@ body {
 .exam-focus__tile{
     padding-left: .25rem;
     padding-right: .25rem;
+    padding-bottom: .4rem;
 }
 .exam-focus__tile .title{
     font-size: .28rem;
@@ -230,7 +242,7 @@ body {
 .exam-focus__tile--list{
     border-top: .2rem solid #f4f4f4;
     padding-top: .3rem;
-    background-color: #fff;
+   /* background-color: #fff;*/
 }
 .focus_list{
     text-align: left;
@@ -241,7 +253,7 @@ body {
 }
 .focus_list a{
     font-size: .30rem;
-    width: 1.5rem;
+    width: 1.6rem;
     border: 1px solid #ccc;
     border-radius: .16rem;
     margin: 0 .2rem .3rem 0rem;
@@ -269,13 +281,13 @@ body {
 /*=====问题详情页面样式=====*/
 .que-item__panel{
     height: 100%;
-    background-color: #fff;
+   /* background-color: #fff;*/
 }
 .question-item__tile{
     color: #282828;
     padding-left: .25rem;
     padding-right: .25rem;
-    background-color: #fff;
+   /* background-color: #fff;*/
 }
 .question-item__tile .ques_title{
     padding-top: .3rem;
