@@ -11,7 +11,7 @@ def home_page(request, id=1):
         id = request.GET.get('id') or 1
     questions = Questions.objects.filter(category_id=id).order_by('-look_num').values('id', 'title', 'look_num')
     paginator = Paginator(questions, 10)
-    category = Category.objects.get(id=id)
+    category = Category.objects.filter(id=id).first()
     if request.is_ajax():
         page = request.GET.get('page')
         json_context = paginator.page(page)
@@ -31,7 +31,7 @@ def home_page(request, id=1):
             'page_number': 1,
             'page_range': page_range,
             'meta_title': meta_title.title if meta_title else '',
-            'category': category.title
+            'category': category.title if category else ''
         }
         return TemplateResponse(request, template, context)
 
