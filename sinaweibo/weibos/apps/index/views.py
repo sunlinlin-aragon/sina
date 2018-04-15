@@ -27,12 +27,13 @@ def home_page(request, id=1):
             'banner_info': banner_info,
             'menu_info': menu_info,
             'questions': questions_list,
-            'active_id': int(id),
+            'active_id': str(id),
             'page_number': 1,
             'page_range': page_range,
             'meta_title': meta_title.title if meta_title else '',
             'category': category.title if category else ''
         }
+        print context['active_id']
         return TemplateResponse(request, template, context)
 
 
