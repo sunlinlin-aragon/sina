@@ -20,8 +20,10 @@ class ExaminationPointCategoryForm(ModelForm):
         cleaned_data = self.cleaned_data
         level = cleaned_data.get('level')
         category = cleaned_data.get('category')
-        if level == '1' and not category:
-            raise forms.ValidationError({'category': _('This field is required.')})
+        if level == '1':
+            if not category:
+                raise forms.ValidationError({'category': _('This field is required.')})
+            return cleaned_data
         else:
             examination_point = cleaned_data['examination_point']
             if not examination_point:
