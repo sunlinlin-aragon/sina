@@ -112,6 +112,11 @@ class ExaminationPointCategory(models.Model):
         return reverse('examination_point_category_create')
 
 
+class QuestionsManager(models.Manager):
+    def get_queryset(self):
+        return super(QuestionsManager, self).get_queryset().filter(is_send=True)
+
+
 class Questions(models.Model):
     title = models.CharField(max_length=512, verbose_name='问题标题')
     answer = models.CharField(max_length=16, verbose_name='问题答案')
@@ -119,8 +124,10 @@ class Questions(models.Model):
     category = models.ForeignKey(Category, verbose_name='考试类别')
     examination_point = models.ManyToManyField(ExaminationPointCategory, verbose_name='考点类别', blank=True, null=True)
     created_datetime = models.DateTimeField(auto_now_add=True)
-    is_send = models.BooleanField(default=True, verbose_name='是否发布')
+    is_send = models.BooleanField(default=False, verbose_name='是否发布')
     look_num = models.BigIntegerField(verbose_name='浏览次数')
+
+    objects = QuestionsManager()
 
     def __str__(self):
         return '%s' % self.title

@@ -47,6 +47,7 @@ def examination_list_page(request, id):
         'active_id': int(id),
         'examination_point': examination_point,
         'meta_title': meta_title.title if meta_title else '',
+        'category': category_list.get(id=int(id))
     }
     return TemplateResponse(request, template, context)
 
@@ -74,6 +75,7 @@ def list_page(request, id=1):
             'page_number': 1,
             'page_range': page_range,
             'meta_title': meta_title.title if meta_title else '',
+            'category': examination_point.category.title
         }
         return TemplateResponse(request, template, context)
 

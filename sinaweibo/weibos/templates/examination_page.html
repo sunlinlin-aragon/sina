@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}最新{{ meta_title|safe }}考试知识点和真题大全{% endblock %}
-{% block meta_keywords %}考试类别，考试类别+考试；考试类别+真题；临床执业医师考试知识点{% endblock %}
+{% block meta_keywords %}{{ category|safe }}, {{ category|safe }}考试, {{ category|safe }}真题, {{ category|safe }}考试知识点{% endblock %}
 {% block meta_description %}最新{{ meta_title|safe }}考试知识点和真题，上360考试网。{% endblock %}
 
 {% block extrastyle %}

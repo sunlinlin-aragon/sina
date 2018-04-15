@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
-{% block title %}最新【考试类别】考试知识点和真题大全{% endblock %}
-{% block meta_keywords %}考试类别，考试类别+考试；考试类别+真题；临床执业医师考试知识点{% endblock %}
-{% block meta_description %}最新【考试类别】考试知识点和真题，上360考试网。{% endblock %}
+{% block title %}{{ question_info.title|safe }}{% endblock %}
+{% block meta_keywords %}{% for point in  question_info.get_related_point %}{{ point.title }}, {% endfor %}{% endblock %}
+{% block meta_description %}{{ question_info.title|safe }}{% endblock %}
 
 {% block extrastyle %}
   <meta charset="UTF-8">
@@ -58,7 +58,9 @@
                   <span class="flag"></span>答案: <span>{{ question_info.answer|safe }}</span>
                 </p>
                 <div>
-                  <span class="title"></span>试题解析：<span class="content">{{ question_info.answer_description|safe }}</span>
+                    {% if question_info.answer_description %}
+                        <span class="title"></span>试题解析：<span class="content">{{ question_info.answer_description|safe }}</span>
+                    {% endif %}
                 </div>
             </div>
           </div>
