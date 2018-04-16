@@ -51,7 +51,7 @@
       <div class="swiper-container">
         <div class="swiper-wrapper swiper-wrapper-theme">
           {% for menu in menu_info %}
-            <a href="/home/{{ menu.id }}/" class="swiper-slide {% if active_id == menu.id %}swiper-slide-active{% endif %}" data-ss="{{ active_id }}">
+            <a href="/home/{{ menu.id }}/" class="swiper-slide {% ifequal active_id menu.id %}active{% endifequal %}" data-ss="{{ active_id}} {{ menu.id }}">
               {{ menu.title|safe }}
             </a>
           {% endfor %}

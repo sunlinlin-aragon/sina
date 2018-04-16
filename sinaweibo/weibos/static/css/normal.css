@@ -78,6 +78,10 @@ body {
     padding-left: 0.2rem; 
     padding-right: 0.2rem;
 }
+.swiper-wrapper-theme.swiper-wrapper .active {
+    color: #5b89ff !important;
+}
+
 .swiper-wrapper-theme.swiper-wrapper .swiper-slide {
     font-weight: 500;
     font-family: "Ping Fang SC",Helvetica;
@@ -86,8 +90,9 @@ body {
     width: auto !important;
     display: inline-block;
 }
+
 .swiper-wrapper-theme.swiper-wrapper .swiper-slide.swiper-slide-active{
-    color: #5b89ff;
+    color: #282828;
 }
 .swiper-wrapper-theme.swiper-wrapper .swiper-slide .swiper-slide:first-child {
     margin-left: 20px;
