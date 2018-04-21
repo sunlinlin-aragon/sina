@@ -213,7 +213,7 @@ class BatchCreateQuestionsView(FormView):
             for i in item:
                 if i.split('.')[0].isdigit():
                     question['title'] = i
-                if 'title' in question and not i.startswith('答案') and not i.startswith('试题解析'):
+                if 'title' in question and not i.startswith('答案') and not i.startswith('试题解析') and not i.split('.')[0].isdigit():
                     question_items.append(i)
                 if i.startswith('答案'):
                     question['answer'] = i
