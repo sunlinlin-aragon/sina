@@ -91,6 +91,11 @@ body {
     display: inline-block;
 }
 
+
+.swiper-wrapper-theme.swiper-wrapper .swiper-slide:focus{
+    text-decoration: none;
+}
+
 .swiper-wrapper-theme.swiper-wrapper .swiper-slide.swiper-slide-active{
     color: #282828;
 }

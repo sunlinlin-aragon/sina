@@ -16,5 +16,7 @@ urlpatterns = [
         name='questions_create'),
     url(r'^questions/(?P<pk>\d+)/update/$', views.QuestionsCreateUpdateView.as_view(),
         name='questions_update'),
+    url(r'^batch_create_questions/$', views.BatchCreateQuestionsView.as_view(),
+        name='batch-create-questions'),
 
 ]

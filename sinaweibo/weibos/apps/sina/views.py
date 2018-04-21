@@ -7,9 +7,14 @@ from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.views.generic.edit import FormView
 from .models import Article, ExaminationPointCategory, Questions
-from .forms import ExaminationPointCategoryForm, QuestionsForm, QuestionsFormSet
+from .forms import ExaminationPointCategoryForm, QuestionsForm, QuestionsFormSet, BatchCreateQuestionsForm
+from django.conf import settings
+import os, sys
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 @login_required(login_url='/admin/login/')
 def index(request):
@@ -156,3 +161,58 @@ class QuestionsCreateUpdateView(generic.UpdateView):
                          "correct the errors below"))
         ctx = self.get_context_data(form=form, **formsets)
         return self.render_to_response(ctx)
+
+
+class BatchCreateQuestionsView(FormView):
+    form_class = BatchCreateQuestionsForm
+    template_name = 'batch_create_questions.html'  # Replace with your template.
+    success_url = '/dashboard/'
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if form.is_valid():
+            file_s = request.FILES['file']
+            question_list = self.handle_uploaded_file(file_s)
+            import ipdb;ipdb.set_trace()
+            messages.info(self.request, _("问题添加成功"))
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def handle_uploaded_file(self, f):
+        with open(os.path.join(settings.BASE_DIR, 'weibos/media/questions/name.txt'), 'wb+') as destination:
+            items_line= []
+            index_split = [0]
+            all_lines = f.readlines().decode('gbk')
+            for index, line in enumerate(all_lines):
+                if line == '\r\n':
+                    index_split.append(index)
+            index_split.append(-1)
+            if index_split:
+                for index, _ in enumerate(index_split):
+                    if _ == -1:
+                        break
+                    start, end = index_split[index] + 1, index_split[index + 1]
+                    if index == 0:
+                        start = 0
+                    items_line.append(all_lines[start: end])
+            return self.handle_questions(items_line)
+
+    def handle_questions(self, items):
+        question_list = []
+        for item in items:
+            question = {}
+            question_items = []
+            for i in item:
+                if str.isdigit(i.split('.')[0]):
+                    question['title'] = i
+                if 'title' in question and not i.startswith('答案') and not i.startswith('试题解析'):
+                    question_items.append(i)
+                if i.startswith('答案'):
+                    question['answer'] = i
+                if i.startswith('试题解析'):
+                    question['answer_description'] = i
+            question['question_items'] = question_items
+            question_list.append(question)
+        return question_list

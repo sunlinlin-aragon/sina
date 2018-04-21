@@ -77,3 +77,17 @@ class QuestionItemsForm(ModelForm):
 
 
 QuestionsFormSet = inlineformset_factory(Questions, QuestionItems, fields=('item_num', 'item_des'), extra=8)
+
+
+class BatchCreateQuestionsForm(forms.Form):
+    category = forms.ModelChoiceField(queryset=Category.objects.all(), required=True, label='考试类别')
+    examination_point = forms.ModelMultipleChoiceField(queryset=ExaminationPointCategory.objects.all(), required=False, label='考点类别')
+    file = forms.FileField(label='考题文件')
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        examination_point = cleaned_data['examination_point']
+        categorys = set([c.category.id for c in examination_point])
+        if len(categorys) > 1:
+                raise forms.ValidationError({'examination_point': _('考点类别部属于同一个category，请从新选择。')})
+        return cleaned_data
