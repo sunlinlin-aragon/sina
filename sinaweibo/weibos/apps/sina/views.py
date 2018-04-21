@@ -5,7 +5,7 @@ from django.views import generic
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.core.urlresolvers import reverse
 from django.views.generic.edit import FormView
 from .models import Article, ExaminationPointCategory, Questions
@@ -169,35 +169,41 @@ class BatchCreateQuestionsView(FormView):
     success_url = '/dashboard/'
 
     def post(self, request, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        if form.is_valid():
+        if request.is_ajax():
+            # import ipdb; ipdb.set_trace()
             file_s = request.FILES['file']
             question_list = self.handle_uploaded_file(file_s)
-            import ipdb;ipdb.set_trace()
-            messages.info(self.request, _("问题添加成功"))
-            return self.form_valid(form)
+            return JsonResponse({'content': question_list})
         else:
-            return self.form_invalid(form)
+            form_class = self.get_form_class()
+            form = self.get_form(form_class)
+            if form.is_valid():
+                file_s = request.FILES['file']
+                question_list = self.handle_uploaded_file(file_s)
+                messages.info(self.request, _("问题添加成功"))
+                return self.form_valid(form)
+            else:
+                return self.form_invalid(form)
 
     def handle_uploaded_file(self, f):
-        with open(os.path.join(settings.BASE_DIR, 'weibos/media/questions/name.txt'), 'wb+') as destination:
-            items_line= []
-            index_split = [0]
-            all_lines = f.readlines().decode('gbk')
-            for index, line in enumerate(all_lines):
-                if line == '\r\n':
-                    index_split.append(index)
-            index_split.append(-1)
-            if index_split:
-                for index, _ in enumerate(index_split):
-                    if _ == -1:
-                        break
-                    start, end = index_split[index] + 1, index_split[index + 1]
-                    if index == 0:
-                        start = 0
-                    items_line.append(all_lines[start: end])
-            return self.handle_questions(items_line)
+        # with open(os.path.join(settings.BASE_DIR, 'weibos/media/questions/name.txt'), 'wb+') as destination:
+        items_line= []
+        index_split = [0]
+        all_lines = f.readlines()
+        new_all_line = [line.decode('gbk') for line in all_lines]
+        for index, line in enumerate(new_all_line):
+            if line == '\r\n':
+                index_split.append(index)
+        index_split.append(-1)
+        if index_split:
+            for index, _ in enumerate(index_split):
+                if _ == -1:
+                    break
+                start, end = index_split[index] + 1, index_split[index + 1]
+                if index == 0:
+                    start = 0
+                items_line.append(new_all_line[start: end])
+        return self.handle_questions(items_line)
 
     def handle_questions(self, items):
         question_list = []
@@ -205,7 +211,7 @@ class BatchCreateQuestionsView(FormView):
             question = {}
             question_items = []
             for i in item:
-                if str.isdigit(i.split('.')[0]):
+                if i.split('.')[0].isdigit():
                     question['title'] = i
                 if 'title' in question and not i.startswith('答案') and not i.startswith('试题解析'):
                     question_items.append(i)
@@ -213,6 +219,8 @@ class BatchCreateQuestionsView(FormView):
                     question['answer'] = i
                 if i.startswith('试题解析'):
                     question['answer_description'] = i
+            if not question_items:
+                continue
             question['question_items'] = question_items
             question_list.append(question)
         return question_list

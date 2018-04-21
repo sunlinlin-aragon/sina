@@ -24,7 +24,11 @@
                 {% csrf_token %}
                 {{ form.as_p }}
                 <input type="submit" value="save">
+                <input type="button" value="预览" id="preview_file">
         </form>
+    </div>
+    <div>
+        <ol id="preview" style="list-style: none;"></ol>
     </div>
 
 
@@ -50,5 +54,45 @@
             $('#id_examination_point').find('option').show();
         }
         $('#id_category').change();
+
+        (function() {
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                }
+            });
+        })();
+
+        $('#preview_file').click(function(){
+            preview_file();
+        });
+
+        function preview_file(){
+            var files = $('#id_file').get(0).files[0];
+            var formData = new FormData();
+            formData.append('file', files);
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+            $.ajax({
+                url: '/dashboard/preview-file-questions/',
+                type: 'POST',
+                data: formData,
+                processData:false,
+                contentType: false,
+                success: function(data){
+                    var preview_content = data['content'];
+                    preview_content.forEach(function(item){
+                        var question_html = '';
+                        var title = item['title'];
+                        var question_items = item['question_items'];
+                        var answer = item['answer'];
+                        var answer_description = item['answer_description'];
+                        question_items.forEach(function(question){
+                            question_html = question_html + '<li> '+ question + '</li>'
+                        })
+                        $('#preview').append('<li><p>[title]</p><ul style="list-style: none;">[question_items]</ul><p>[answer]</p><p>[answer_description]</p></li>'.replace('[title]', title).replace('[question_items]', question_html).replace('[answer]', answer).replace('[answer_description]', answer_description))
+                    })
+                }
+            })
+        }
     </script>
 {% endblock %}
