@@ -15,6 +15,7 @@
 {% if app_list %}
   <table>
      <tr class="model-{{ model.object_name|lower }}">
+        <th scope="row"></th>
          <th scope="row">问题标题：</th>
          <th scope="row">category：</th>
          <th scope="row">创建时间：</th>
@@ -22,6 +23,7 @@
       </tr>
     {% for app in app_list %}
       <tr class="model-{{ model.object_name|lower }}">
+          <td><input type="checkbox" name='question' value="{{ app.id }}"></td>
           <td><a href="{{ app.get_admin_url }}" class="addlink">{{ app.title }}</a></td>
           <td>{{ app.category.title }}</td>
           <td>{{ app.created_datetime }}</td>
@@ -29,9 +31,37 @@
       </tr>
     {% endfor %}
   </table>
+  <input type="submit" value="save" onclick="save_question()">
 {% else %}
     <p>{% trans "You don't have permission to edit anything." %}</p>
 {% endif %}
 </div>
+<script type="text/javascript">
+  (function() {
+      $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+              xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+          }
+      });
+  })();
+
+  function save_question(){
+    var values = [];
+    $("input[name='question']:checked").each(function(){
+      values.push($(this).val())
+    })
+    values = values.join(',');
+    $.ajax({
+        url: '/dashboard/save_question/',
+        type: 'POST',
+        data: {'values': values},
+        success: function(result){
+          if (result['success']){
+            window.location.reload();
+          }
+        }
+    })
+  }
+</script>
 {% endblock %}
 

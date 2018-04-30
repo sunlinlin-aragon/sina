@@ -11,6 +11,7 @@ from django.views.generic.edit import FormView
 from .models import Article, ExaminationPointCategory, Questions, QuestionItems
 from .forms import ExaminationPointCategoryForm, QuestionsForm, QuestionsFormSet, BatchCreateQuestionsForm
 from django.conf import settings
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import os, sys
 import random
 
@@ -269,3 +270,11 @@ class BatchCreateQuestionsView(FormView):
                 fail_num += 1
 
         return {'success_item': success_item, "exists_item": exists_item, "fail_num": fail_num}
+
+
+def save_question(request):
+    ids = request.POST.get('values')
+    if ids:
+        ids = ids.split(',')
+        Questions.objects.filter(id__in=ids).update(is_send=True)
+        return JsonResponse({'success': True})
