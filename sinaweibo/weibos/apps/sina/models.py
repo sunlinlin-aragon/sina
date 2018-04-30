@@ -151,7 +151,7 @@ class Questions(models.Model):
         return self.category.examinationpointcategory_set.all()
 
 
-item_num_level = (('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'), ('E', "E"), ('F', 'F'), ('G', 'G'), ('H', 'H'))
+item_num_level = (('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'), ('E', "E"), ('F', 'F'), ('G', 'G'), ('H', 'H'), ('I', 'I'), ('J', 'J'), ('K', 'K'))
 
 
 class QuestionItems(models.Model):
