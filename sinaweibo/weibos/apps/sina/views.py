@@ -8,10 +8,12 @@ from django.utils.translation import ugettext_lazy as _
 from django.http import HttpResponseRedirect, JsonResponse
 from django.core.urlresolvers import reverse
 from django.views.generic.edit import FormView
-from .models import Article, ExaminationPointCategory, Questions
+from .models import Article, ExaminationPointCategory, Questions, QuestionItems
 from .forms import ExaminationPointCategoryForm, QuestionsForm, QuestionsFormSet, BatchCreateQuestionsForm
 from django.conf import settings
 import os, sys
+import random
+
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -163,14 +165,14 @@ class QuestionsCreateUpdateView(generic.UpdateView):
         return self.render_to_response(ctx)
 
 
+ITEM_NUM_MAPPING = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'H'}
 class BatchCreateQuestionsView(FormView):
     form_class = BatchCreateQuestionsForm
     template_name = 'batch_create_questions.html'  # Replace with your template.
-    success_url = '/dashboard/'
+    success_url = '/dashboard/batch_create_questions/'
 
     def post(self, request, *args, **kwargs):
         if request.is_ajax():
-            # import ipdb; ipdb.set_trace()
             file_s = request.FILES['file']
             question_list = self.handle_uploaded_file(file_s)
             return JsonResponse({'content': question_list})
@@ -179,9 +181,13 @@ class BatchCreateQuestionsView(FormView):
             form = self.get_form(form_class)
             if form.is_valid():
                 file_s = request.FILES['file']
+                data = form.cleaned_data
                 question_list = self.handle_uploaded_file(file_s)
-                messages.info(self.request, _("问题添加成功"))
-                return self.form_valid(form)
+                sync_info = self.save_info(data, question_list)
+                messages.info(self.request, _("问题添加成功, "))
+                ctx = self.get_context_data(form=form)
+                ctx.update(sync_info)
+                return self.render_to_response(ctx)
             else:
                 return self.form_invalid(form)
 
@@ -224,3 +230,42 @@ class BatchCreateQuestionsView(FormView):
             question['question_items'] = question_items
             question_list.append(question)
         return question_list
+
+    def save_info(self, data, question_list):
+        category = data.get('category')
+        examination_point = data.get('examination_point')
+        fail_num = 0
+        success_item = []
+        exists_item = []
+        for question in question_list:
+            title = question.get('title')
+            answer = question.get('answer')
+            answer_description = question.get('answer_description')
+            question_items = question.get('question_items')
+
+            if title and answer and question_items:
+                if Questions.objects.filter(title=title.split('.', 1)[-1]).exists():
+                    exists_item.append(title.split('.')[0])
+                    continue
+                new_question = Questions()
+                new_question.category = category
+                new_question.title = title.split('.', 1)[-1]
+                new_question.answer = answer.split(':')[-1]
+                new_question.answer_description = answer_description.split(':')[-1]
+                new_question.look_num = random.randint(0, 10)
+                new_question.save()
+                for point in examination_point:
+                    new_question.examination_point.add(point)
+                new_question.save()
+
+                for index, item in enumerate(question_items):
+                    new_questionitem = QuestionItems()
+                    new_questionitem.question = new_question
+                    new_questionitem.item_num = ITEM_NUM_MAPPING.get(index)
+                    new_questionitem.item_des = item
+                    new_questionitem.save()
+                success_item.append(title.split('.')[0])
+            else:
+                fail_num += 1
+
+        return {'success_item': success_item, "exists_item": exists_item, "fail_num": fail_num}

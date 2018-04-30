@@ -94,7 +94,7 @@
 
     $(window).scroll(function(){      
       var question_height = $('.summary').first().height();
-      if ( $(window).scrollTop() >= $(document).height() - $(window).height() - 1) {
+      if ( $(window).scrollTop() >= $(document).height() - $(window).height() - question_height) {
         fetch_more_questions();
       }
     });
