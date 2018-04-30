@@ -165,7 +165,7 @@ class QuestionsCreateUpdateView(generic.UpdateView):
         return self.render_to_response(ctx)
 
 
-ITEM_NUM_MAPPING = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'H'}
+ITEM_NUM_MAPPING = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K'}
 class BatchCreateQuestionsView(FormView):
     form_class = BatchCreateQuestionsForm
     template_name = 'batch_create_questions.html'  # Replace with your template.

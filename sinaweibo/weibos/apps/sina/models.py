@@ -114,7 +114,7 @@ class ExaminationPointCategory(models.Model):
 
 class QuestionsManager(models.Manager):
     def get_queryset(self):
-        return super(QuestionsManager, self).get_queryset().filter(is_send=True)
+        return super(QuestionsManager, self).get_queryset()
 
 
 class Questions(models.Model):

@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 def home_page(request, id=1):
     if request.is_ajax():
         id = request.GET.get('id') or 1
-    questions = Questions.objects.filter(category_id=id).order_by('-look_num').values('id', 'title', 'look_num')
+    questions = Questions.objects.filter(category_id=id, is_send=True).order_by('-look_num').values('id', 'title', 'look_num')
     paginator = Paginator(questions, 10)
     category = Category.objects.filter(id=id).first()
     if request.is_ajax():
@@ -58,7 +58,7 @@ def list_page(request, id=1):
     if request.is_ajax():
         id = request.GET.get('id') or 1
     examination_point = ExaminationPointCategory.objects.filter(id=id).first()
-    questions = examination_point.questions_set.all().order_by('-look_num').values('id', 'title', 'look_num')
+    questions = examination_point.questions_set.filter(is_send=True).order_by('-look_num').values('id', 'title', 'look_num')
     paginator = Paginator(questions, 10)
     if request.is_ajax():
         page = request.GET.get('page')

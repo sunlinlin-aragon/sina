@@ -76,7 +76,7 @@ class QuestionItemsForm(ModelForm):
         fields = ['item_num', 'item_des']
 
 
-QuestionsFormSet = inlineformset_factory(Questions, QuestionItems, fields=('item_num', 'item_des'), extra=8)
+QuestionsFormSet = inlineformset_factory(Questions, QuestionItems, fields=('item_num', 'item_des'), extra=12)
 
 
 class BatchCreateQuestionsForm(forms.Form):
