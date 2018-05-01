@@ -7,8 +7,10 @@ from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='/admin/login/')
 def home_page(request, id=1):
+    if id == 1:
+        id = Category.objects.first().id
     if request.is_ajax():
-        id = request.GET.get('id') or Category.objects.first().id
+        id = request.GET.get('id')
     questions = Questions.objects.filter(category_id=id, is_send=True).order_by('-look_num').values('id', 'title', 'look_num')
     paginator = Paginator(questions, 10)
     category = Category.objects.filter(id=id).first()
