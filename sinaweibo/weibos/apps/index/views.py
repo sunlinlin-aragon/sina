@@ -40,7 +40,7 @@ def home_page(request, id=1):
 
 @login_required(login_url='/admin/login/')
 def examination_list_page(request, id):
-    if id == 1:
+    if id == '1':
         id = Category.objects.first().id
     template = 'examination_page.html'
     category_list = Category.objects.all()
