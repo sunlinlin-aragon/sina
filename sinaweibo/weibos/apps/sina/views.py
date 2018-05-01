@@ -252,7 +252,7 @@ class BatchCreateQuestionsView(FormView):
                 new_question.category = category
                 new_question.title = title.split('.', 1)[-1]
                 new_question.answer = answer.split(':')[-1]
-                new_question.answer_description = answer_description.split(':')[-1]
+                new_question.answer_description = answer_description.split(':')[-1] if answer_description else ''
                 new_question.look_num = random.randint(0, 10)
                 new_question.save()
                 for point in examination_point:
