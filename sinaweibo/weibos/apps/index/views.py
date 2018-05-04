@@ -88,6 +88,8 @@ def list_page(request, id=1):
 def question_page(request, id):
     template = 'question_info.html'
     question_info = Questions.objects.filter(id=id).first()
+    question_info.look_num += 1
+    question_info.save()
     question_item = question_info.questionitems_set.all()
     context = {
         'question_info': question_info,
