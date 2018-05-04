@@ -340,6 +340,10 @@ body {
     width: .06rem;
     height: .3rem;
 }
+.question-item__tile .ques_title .flag{
+    top: .4rem;
+    margin-top: 0;
+}
 .question-item__tile .ans-detail{
     display: none;
 }
