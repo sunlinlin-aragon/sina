@@ -122,5 +122,34 @@
         },
       })
     }
+    function init_page() {
+        var active_a = $('.swiper-slide').filter('.active')[0];
+        var phone_width = document.body.offsetWidth;
+        var a_left = active_a.offsetLeft;
+        var l_offet = 0
+        if((a_left + active_a.offsetWidth)/ phone_width != a_left/phone_width){
+            l_offet = active_a.offsetWidth
+        }
+
+        if((a_left + active_a.offsetWidth) >= parseInt(a_left/phone_width) * phone_width && parseInt((a_left + active_a.offsetWidth)/phone_width) != 0){
+            var cur_position = a_left - l_offet;
+            $('.swiper-wrapper-theme').attr('style','transform: translate3d(-'+ cur_position +'px, 0px, 0px)');
+        }else {
+
+        }
+    }
+    $(function test() {
+        init_page();
+    })
+
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6ade413568d87dd97385130c8e471b65";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+
+
   </script>
 {% endblock %}
