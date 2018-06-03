@@ -148,7 +148,7 @@ class Questions(models.Model):
         ordering = ['-look_num', '-created_datetime']
 
     def get_related_point(self):
-        return self.examination_point.examinationpointcategory_set.all()
+        return self.examination_point.all()
 
 
 item_num_level = (('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'), ('E', "E"), ('F', 'F'), ('G', 'G'), ('H', 'H'), ('I', 'I'), ('J', 'J'), ('K', 'K'))
