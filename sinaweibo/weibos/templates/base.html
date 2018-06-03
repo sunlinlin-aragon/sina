@@ -2,6 +2,15 @@
 
 {% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?6ade413568d87dd97385130c8e471b65";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
   <head>
     <title>{% block title %}{% endblock %}</title>
     <meta content="{% block meta_keywords %}{% endblock %}" name="keywords" />
@@ -87,14 +96,6 @@
       </div>
       <!-- END Container -->
     {% endblock body_content %}
-      <script>
-        var _hmt = _hmt || [];
-        (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?6ade413568d87dd97385130c8e471b65";
-          var s = document.getElementsByTagName("script")[0];
-          s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
+
   </body>
 </html>
