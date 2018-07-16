@@ -55,7 +55,7 @@
             <div class="ans-detail">
                 <!-- hidden -->
                 <p class="ans_option">
-                  <span class="flag"></span>答案: <span>{{ question_info.answer|safe }}</span>
+                  <span class="flag"></span>{% if '答案' not in  question_info.answer %}答案: {% endif %}<span>{{ question_info.answer|safe }}</span>
                 </p>
                 <div>
                     {% if question_info.answer_description %}
